@@ -19,19 +19,19 @@ class CategoryController (@Autowired private val  categoryService:CategoryServic
             .body(categoryService.getAllCategories())
 
 
-    //gets the requested cqtegory
-    @GetMapping("categories/{id}")
+    //gets the requested category
+    @GetMapping("category/{id}")
     fun getCategoryByid(@PathVariable id : Long) : Category =
         categoryService.getCategoryById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,
             "This cqtegory does not exist")
 
 
-    //creates a new cqtegory
-    @PostMapping("/categories")
-    fun saveCategories(@RequestBody cqtegory : Category) : ResponseEntity<Category>   {
+    //creates a new category
+    @PostMapping("/category")
+    fun saveCategories(@RequestBody category : Category) : ResponseEntity<Category>   {
         try {
             return ResponseEntity.status(HttpStatus.OK)
-                .body(categoryService.saveCategories(cqtegory))
+                .body(categoryService.saveCategories(category))
         }catch (e : Exception){
             throw ResponseStatusException(HttpStatus.BAD_REQUEST,
                 e.message)
@@ -39,12 +39,12 @@ class CategoryController (@Autowired private val  categoryService:CategoryServic
 
     }
 
-    //updates an existing cqtegory
-    @PutMapping("/categories/{id}")
-    fun updateCategory(@PathVariable id : Long, @RequestBody cqtegory : Category): ResponseEntity<Category> {
+    //updates an existing category
+    @PutMapping("/category/{id}")
+    fun updateCategory(@PathVariable id : Long, @RequestBody category : Category): ResponseEntity<Category> {
         try{
             return ResponseEntity.status(HttpStatus.OK)
-                .body(categoryService.updateCategory(id,cqtegory))
+                .body(categoryService.updateCategory(id,category))
 
         }catch (e : Exception){
                 throw Exception(e.message)
@@ -52,8 +52,8 @@ class CategoryController (@Autowired private val  categoryService:CategoryServic
 
     }
 
-    // deletes an existing cqtegory
-    @DeleteMapping("/categories/{id}")
+    // deletes an existing category
+    @DeleteMapping("/category/{id}")
     fun deleteCategory(@PathVariable id : Long) : ResponseEntity<Any>{
         try {
             categoryService.deleteCategory(id)
