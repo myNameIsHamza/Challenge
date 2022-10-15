@@ -10,5 +10,5 @@ class Category(
     val name: String = "",
     val description: String = "",
     @ManyToOne
-    val category: Category = Category()
+    val category: Category
 )

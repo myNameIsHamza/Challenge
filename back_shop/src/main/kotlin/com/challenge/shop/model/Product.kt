@@ -11,5 +11,5 @@ class Product(
     val description: String = "",
     val price: Double = 0.0,
     @ManyToOne
-    val category: Category = Category()
+    val category: Category
 )
