@@ -3,9 +3,9 @@ export default class Category {
     name: string;
     description: string;
     price: Number;
-    category: string;
+    category: Number;
 
-    constructor(id: number,name: string, description: string, price: Number, category: string) {
+    constructor(id: number,name: string, description: string, price: Number, category: Number) {
         this.id = id;
         this.name = name;
         this.description = description;
