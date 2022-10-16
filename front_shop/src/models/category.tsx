@@ -2,14 +2,12 @@ export default class Category {
     id?: number;
     name: string;
     description: string;
-    price: Number;
-    category: Number;
+    categoryId: Number;
 
-    constructor(id: number,name: string, description: string, price: Number, category: Number) {
+    constructor(id: number,name: string, description: string, categoryId: Number) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price = price;
-        this.category = category;
+        this.categoryId = categoryId;
     } 
 }
