@@ -72,10 +72,10 @@ class CategoryController(@Autowired private val categoryService: CategoryService
     }
 
     // deletes an existing category
-    @DeleteMapping("/category/{id}")
-    fun deleteCategory(@PathVariable id: Long): ResponseEntity<Any> {
+    @DeleteMapping("/category/{uid}")
+    fun deleteCategory(@PathVariable uid: Long): ResponseEntity<Any> {
         try {
-            categoryService.deleteCategory(id)
+            categoryService.deleteCategory(uid)
         } catch (e: Exception) {
             // can handle it by adding to logger
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)

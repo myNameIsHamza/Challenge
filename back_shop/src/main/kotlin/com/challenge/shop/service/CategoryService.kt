@@ -29,10 +29,6 @@ class CategoryService(@Autowired private val categoryDao: CategoryDao) {
     }
 
     fun deleteCategory(@PathVariable id: Long) {
-        try {
-            categoryDao.deleteById(id)
-        } catch (e: Exception) {
-            // can handle it by adding to logger
-        }
+        categoryDao.deleteById(id)
     }
 }

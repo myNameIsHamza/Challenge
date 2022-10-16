@@ -1,5 +1,6 @@
 package com.challenge.shop.model
 
+import com.challenge.shop.dto.ProductDto
 import javax.persistence.*
 
 @Entity
@@ -11,5 +12,13 @@ class Product(
     val description: String = "",
     val price: Double = 0.0,
     @ManyToOne
-    val category: Category
+    val category: Category?
+)
+
+fun ProductDto.toProduct(category: Category?) = Product(
+    id = uid,
+    name = name,
+    description = description,
+    price = price,
+    category = category
 )
