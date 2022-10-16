@@ -1,8 +1,9 @@
 import * as React from "react";
-import TableRow from "./TableRow";
-import Category from "../models/category";
-import BaseService from "../service/base.service";
+import TableRow from "./tableRow";
+import Category from "../../models/category";
+import BaseService from "../../service/base.service";
 import * as toastr from "toastr";
+import { Link } from "react-router-dom";
 interface IProps { }
 interface IState {
   listCategories: Array<Category>;
@@ -31,7 +32,7 @@ class CategoryTable extends React.Component<IProps, IState> {
         const data = rp.data;
         const listCategories = new Array<Category>();
         (data || []).forEach((p: any) => {
-          listCategories.push(new Category(p.uid, p.name, p.description, p.categoryId??"none"));
+          listCategories.push(new Category(p.uid, p.name, p.description, p.categoryId ?? "none"));
         });
 
         this.setState({ listCategories: listCategories });
@@ -110,6 +111,9 @@ class CategoryTable extends React.Component<IProps, IState> {
           </thead>
           <tbody>{this.tabRow()}</tbody>
         </table>
+        <div className="text-end"><Link to={"/createCategory/"} className="btn btn-success">
+          Ajout category
+        </Link></div>
       </div>
     );
   }
