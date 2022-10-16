@@ -12,7 +12,7 @@ class CategoryService(@Autowired private val categoryDao: CategoryDao) {
     fun getAllCategories(): List<Category> =
         categoryDao.findAll()
 
-    fun getCategoryById (@PathVariable id: Long): Category? =
+    fun getCategoryById(@PathVariable id: Long): Category =
         categoryDao.findById(id).get()
 
 

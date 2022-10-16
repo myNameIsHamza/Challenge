@@ -1,6 +1,9 @@
 package com.challenge.shop.controller
 
+import com.challenge.shop.dto.CategoryDto
+import com.challenge.shop.dto.toCategoryDto
 import com.challenge.shop.model.Category
+import com.challenge.shop.model.toCategory
 import com.challenge.shop.service.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -9,57 +12,73 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
-class CategoryController (@Autowired private val  categoryService:CategoryService){
+class CategoryController(@Autowired private val categoryService: CategoryService) {
 
 
     //gets all categories
     @GetMapping("/categories")
-    fun getAllCategories() : ResponseEntity<List<Category>> =
+    fun getAllCategories(): ResponseEntity<List<CategoryDto>> =
         ResponseEntity.status(HttpStatus.OK)
-            .body(categoryService.getAllCategories())
+            .body(categoryService.getAllCategories().map { it.toCategoryDto() })
 
 
     //gets the requested category
-    @GetMapping("category/{id}")
-    fun getCategoryByid(@PathVariable id : Long) : Category =
-        categoryService.getCategoryById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,
-            "This cqtegory does not exist")
+    @GetMapping("category/{uid}")
+    fun getCategoryByid(@PathVariable uid: Long): ResponseEntity<Any> {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                categoryService.getCategoryById(uid)?.toCategoryDto()
+            )
+        }catch (e : Exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.message)
+        }
+
+    }
 
 
     //creates a new category
     @PostMapping("/category")
-    fun saveCategories(@RequestBody category : Category) : ResponseEntity<Category>   {
+    fun saveCategories(@RequestBody categoryDto: CategoryDto): ResponseEntity<Any> {
         try {
             return ResponseEntity.status(HttpStatus.OK)
-                .body(categoryService.saveCategories(category))
-        }catch (e : Exception){
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST,
-                e.message)
+                .body(categoryService.saveCategories(categoryDto.toCategory(categoryDto.categoryId?.let {
+                    categoryService.getCategoryById(
+                        it
+                    )
+                })))
+        } catch (e: Exception) {
+            return ResponseEntity.badRequest().body(e.message);
         }
 
     }
 
     //updates an existing category
-    @PutMapping("/category/{id}")
-    fun updateCategory(@PathVariable id : Long, @RequestBody category : Category): ResponseEntity<Category> {
-        try{
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(categoryService.updateCategory(id,category))
+    @PutMapping("/category/{uid}")
+    fun updateCategory(@PathVariable uid: Long, @RequestBody categoryDto: CategoryDto): ResponseEntity<Any> {
 
-        }catch (e : Exception){
-                throw Exception(e.message)
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(categoryService.updateCategory(uid, categoryDto.toCategory(categoryDto.categoryId?.let {
+                    categoryService.getCategoryById(
+                        it
+                    )
+                })))
+
+        } catch (e: Exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
 
     }
 
     // deletes an existing category
     @DeleteMapping("/category/{id}")
-    fun deleteCategory(@PathVariable id : Long) : ResponseEntity<Any>{
+    fun deleteCategory(@PathVariable id: Long): ResponseEntity<Any> {
         try {
             categoryService.deleteCategory(id)
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             // can handle it by adding to logger
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
         return ResponseEntity.noContent().build()
 

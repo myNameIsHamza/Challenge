@@ -1,5 +1,6 @@
 package com.challenge.shop.model
 
+import com.challenge.shop.dto.CategoryDto
 import javax.persistence.*
 
 @Entity
@@ -10,5 +11,12 @@ class Category(
     val name: String = "",
     val description: String = "",
     @ManyToOne
-    val category: Category
+    val category: Category?
+)
+
+fun CategoryDto.toCategory(category: Category?) = Category(
+    id = uid,
+    name = name,
+    description = description,
+    category = category
 )
