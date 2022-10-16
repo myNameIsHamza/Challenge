@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
+@CrossOrigin
 class ProductController(@Autowired private val productService: ProductService,@Autowired private val categoryService: CategoryService) {
 
     //gets all products

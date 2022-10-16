@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
+@CrossOrigin
 class CategoryController(@Autowired private val categoryService: CategoryService) {
 
 
