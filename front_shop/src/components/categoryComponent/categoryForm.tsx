@@ -1,15 +1,15 @@
 import * as React from 'react';
 import Category from '../../models/category';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import { Input, Button } from '../../common';
 
 interface Props {
     category: Category;
     onChange: (fieldName: string, value: string) => void;
+    onSelect: (event: any) => void;
     onSave: () => void;
 }
+
 
 export const CategoryForm: React.FunctionComponent<Props> = (props) => {
     return (
@@ -32,23 +32,21 @@ export const CategoryForm: React.FunctionComponent<Props> = (props) => {
 
 
             <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                    Caregory    
-                </InputLabel>
-                <NativeSelect
-                    defaultValue={1}
-                    inputProps={{
-                        name: 'age',
-                        id: 'uncontrolled-native',
-                    }}
+                <label>Category</label>
+                <select
+                    defaultValue={'0'}
+                    onChange={props.onSelect}
+                    name={'categoryId'}
                 >
-                    <option value={1}>Clothes</option>
-                    <option value={2}>Shoes</option>
-                    <option value={3}>Men clothes</option>
-                    <option value={4}>Women clothes</option>
-                    <option value={5}>Men shoes</option>
-                    <option value={6}>Men shoes</option>
-                </NativeSelect>
+                    <option value="0">None</option>
+
+                    <option value="1">Clothes</option>
+                    <option value="2">Shoes</option>
+                    <option value="3">Men clothes</option>
+                    <option value="4">Women clothes</option>
+                    <option value="5">Men shoes</option>
+                    <option value="6">Men shoes</option>
+                </select>
             </FormControl>
 
             <Button

@@ -40,8 +40,6 @@ class CategoryTable extends React.Component<IProps, IState> {
       } else {
         this.setState({ isReady: true });
         this.setState({ hasError: true });
-        console.log("Messages: " + rp.Messages);
-        console.log("Exception: " + rp.Exception);
       }
     });
 

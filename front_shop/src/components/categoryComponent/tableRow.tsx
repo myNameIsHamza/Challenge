@@ -5,7 +5,7 @@ import BaseService from "../../service/base.service";
 import * as toastr from "toastr";
 
 function Del(Id?: number) {
-  BaseService.delete("/employees/", Id).then((rp) => {
+  BaseService.delete("/category/", Id).then((rp) => {
     if (rp) {
       toastr.success("Member deleted.");
       window.location.reload();
@@ -30,12 +30,12 @@ const TableRow: React.FunctionComponent<IProps> = (props) => {
         <td>{props.category.description}</td>
         <td><>{props.category.categoryId}</></td>
         <td>
-          <Link to={"/edit/" + props.category.id} className="btn btn-primary">
+          <Link to={"/edit/" + props.category.uid} className="btn btn-primary">
             Edit
           </Link>
         </td>
         <td>
-          <button onClick={() => Del(props.category.id)} className="btn btn-danger">
+          <button onClick={() => Del(props.category.uid)} className="btn btn-danger">
             Delete
           </button>
         </td>

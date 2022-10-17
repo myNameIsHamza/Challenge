@@ -35,12 +35,25 @@ interface IState {
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+    }
+
+    private onSelect(event : any){
+        const nextState = {
+            ...this.state,
+            category: {
+                ...this.state.category,
+                [event.target.name]: event.target.value,
+            }
+        };
+
+        this.setState(nextState);
     }
 
     private onFieldValueChange(fieldName: string, value: string) { 
         const nextState = {
             ...this.state,
-            person: {
+            category: {
                 ...this.state.category,
                 [fieldName]: value,
             }
@@ -49,16 +62,16 @@ interface IState {
         this.setState(nextState);
     }
     private onSave = () => { 
-        BaseService.create<Category>("/employees", this.state.category).then(
+        BaseService.create<Category>("/category", this.state.category).then(
             (rp) => {
-                if (rp.Status) {
+                if (rp) {
                     toastr.success('Member saved.'); 
                     this.setState({
                         category: {
                             name: '',
                             description: '',
                             categoryId: 0,
-                            id: undefined,
+                            uid: undefined,
                         }
                     });
                      this.props.history.goBack();
@@ -76,6 +89,7 @@ interface IState {
                 category={this.state.category}
                 onChange={this.onFieldValueChange}
                 onSave={this.onSave}
+                onSelect={this.onSelect}
             />
         );
     }     

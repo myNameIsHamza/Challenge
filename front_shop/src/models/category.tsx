@@ -1,11 +1,11 @@
 export default class Category {
-    id?: number;
+    uid?: number;
     name: string;
     description: string;
     categoryId: Number;
 
-    constructor(id: number,name: string, description: string, categoryId: Number) {
-        this.id = id;
+    constructor(uid: number,name: string, description: string, categoryId: Number) {
+        this.uid = uid;
         this.name = name;
         this.description = description;
         this.categoryId = categoryId;
