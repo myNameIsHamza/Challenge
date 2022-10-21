@@ -26,8 +26,15 @@ class CategoryTable extends React.Component<IProps, IState> {
     };
   }
 
-  public componentDidMount() {
-    BaseService.getAll<Category>("/categories").then((rp) => {
+public async fetchCategories(): Promise<any> {
+    let res = BaseService.getAll<Category>("/categories").then((rp) => {
+      return rp;
+    });
+    return res;
+  }
+
+   async getCategoryData() {
+      const rp = await this.fetchCategories();
       if (rp.status === 200) {
         const data = rp.data;
         const listCategories = new Array<Category>();
@@ -41,7 +48,10 @@ class CategoryTable extends React.Component<IProps, IState> {
         this.setState({ isReady: true });
         this.setState({ hasError: true });
       }
-    });
+  }
+
+  public componentDidMount() {
+    this.getCategoryData();
 
     setTimeout(() => {
       if (!this.state.isReady) {

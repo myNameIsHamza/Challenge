@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,7 +7,47 @@ import CategoryTable from './components/categoryComponent/categoryTable.componen
 import ProductTable from './components/productComponent/productTable.component';
 import CreateCategory from './components/categoryComponent/create.component';
 import CreateProduct from './components/productComponent/create.component';
+import Tree from './components/treeComponent/tree.component'
+import { CurrencyApiFromEuro } from './api/indexe'
+import { RapidApi } from './api/rapidApi'
+
+
 function App() {
+    const [factor, setFactor]: any = useState(1);
+    const [currencyName, setCurrencyName]: any = useState('EUR');
+    useEffect(() => {
+    RapidApi()
+    // keycloak.init({
+    //   checkLoginIframeInterval : 6000
+    // })
+    
+  }, [])
+    const handleSelect = async (event: any) => {
+        const data = JSON.parse(localStorage.getItem('currency')|| '{}')
+        switch (event.target.value) {
+            case "MAD":
+                setFactor(data.rates.MAD)
+                break;
+            case "EUR":
+                setFactor(1)
+                break;
+            case "USD":
+                setFactor(data.rates.USD)
+                break;
+            case "JPY":
+                setFactor(data.rates.JPY)
+                break;
+            case "GBP":
+                setFactor(data.rates.GBP)
+                break;
+        
+            default:
+                break;
+        }
+        setCurrencyName(event.target.value)
+
+
+    }
     return (
         <Router>
             <div className="container">
@@ -23,6 +63,21 @@ function App() {
                             <li className="nav-item">
                                 <Link to={'/tree'} className="nav-link">Tree</Link>
                             </li>
+                            <li className="nav-item float-end">
+                                <select
+                                    defaultValue={'0'}
+                                    onChange={handleSelect}
+                                    name={'categoryId'}
+                                >
+                                    <option value="EUR">EUR</option>
+
+                                    <option value="USD">USD</option>
+                                    <option value="MAD">MAD</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="JPY">JPY</option>
+
+                                </select>
+                            </li>
                         </ul>
                     </div>
                 </nav> <br />
@@ -33,9 +88,23 @@ function App() {
                   <Route path='/editProduct/:id' element={<EditProduct />}
                   <Route path='/tree' element={<Tree />}
                   <Route path='/products' element={<ProductsTable />} */}
-                    <Route exact path='/createProduct' component={CreateProduct} />
-                    <Route exact path='/createCategory' component={CreateCategory} />
+                    <Route path='/createProduct' component={CreateProduct} />
+                    <Route path='/createCategory' component={CreateCategory} />
                     <Route path='/products' component={ProductTable} />
+                    <Route
+                        path="/products"
+                        render={({ match }) => {
+                            // Do whatever you want with the match...
+                            return <ProductTable factor={factor} currencyName={currencyName} />;
+                        }}/>
+
+                    <Route
+                        path="/tree"
+                        render={({ match }) => {
+                            // Do whatever you want with the match...
+                            return <Tree factor={factor} currencyName={currencyName} />;
+                        }}
+                    />
                     <Route path='/' component={CategoryTable} />
                 </Switch>
             </div>
@@ -44,3 +113,4 @@ function App() {
 }
 
 export default App;
+

@@ -15,7 +15,11 @@ function Del(Id?: number) {
   });
 }
 
+
+
 interface IProps {
+  factor: number,
+  currencyName: string,
   product: Product;
   index: Number;
 }
@@ -28,6 +32,7 @@ const TableRow: React.FunctionComponent<IProps> = (props) => {
         <td><>{props.index}</></td>
         <td>{props.product.name}</td>
         <td>{props.product.description}</td>
+        <td>{props.product.price +" "+ props.currencyName}</td>
         <td><>{props.product.categoryId}</></td>
         <td>
           <Link to={"/edit/" + props.product.uid} className="btn btn-primary">

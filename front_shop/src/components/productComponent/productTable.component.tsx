@@ -4,44 +4,61 @@ import Product from "../../models/product";
 import BaseService from "../../service/base.service";
 import * as toastr from "toastr";
 import { Link } from "react-router-dom";
-interface IProps { }
+interface props {
+  factor: number,
+  currencyName: string,
+}
 interface IState {
   listproducts: Array<Product>;
   isReady: Boolean;
   hasError: Boolean;
+  factor: number,
+  currencyName: string,
 }
 
-class ProductTable extends React.Component<IProps, IState> {
+class ProductTable extends React.Component<props, IState> {
   public state: IState = {
     listproducts: new Array<Product>(),
     isReady: false,
     hasError: false,
+    factor: 1,
+    currencyName: "",
   };
-  constructor(props: IProps) {
+  constructor(props: any) {
     super(props);
     this.state = {
       isReady: false,
       listproducts: Array<Product>(),
       hasError: false,
+      factor: 1,
+      currencyName: "",
     };
   }
-
-  public componentDidMount() {
-    BaseService.getAll<Product>("/products").then((rp) => {
-      if (rp.status === 200) {
-        const data = rp.data;
-        const listproducts = new Array<Product>();
-        (data || []).forEach((p: any) => {
-          listproducts.push(new Product(p.uid, p.name, p.description,p.price, p.categoryId ?? "None"));
-        });
-
-        this.setState({ listproducts: listproducts });
-        this.setState({ isReady: true });
-      } else {
-        this.setState({ isReady: true });
-        this.setState({ hasError: true });
-      }
+  public async fetchProducts(): Promise<any> {
+    let res = BaseService.getAll<Product>("/products").then((rp) => {
+      return rp;
     });
+    return res;
+  }
+
+  async getProductData() {
+    const rp: any = await this.fetchProducts();
+    if (rp.status === 200) {
+      const data = rp.data;
+      const listproducts = new Array<Product>();
+      (data || []).forEach((p: any) => {
+        listproducts.push(new Product(p.uid, p.name, p.description, p.price, p.categoryId ?? "None"));
+      });
+
+      this.setState({ listproducts: listproducts });
+      this.setState({ isReady: true });
+    } else {
+      this.setState({ isReady: true });
+      this.setState({ hasError: true });
+    }
+  }
+  public componentDidMount() {
+    this.getProductData();
 
     setTimeout(() => {
       if (!this.state.isReady) {
@@ -86,8 +103,8 @@ class ProductTable extends React.Component<IProps, IState> {
       );
     }
 
-    return this.state.listproducts.map(function (object, i) {
-      return <TableRow key={i} index={i + 1} product={object} />;
+    return this.state.listproducts.map((object, i)=> {
+      return <TableRow factor={this.props.factor} currencyName={this.props.currencyName} key={i} index={i + 1} product={object} />;
     });
   };
 
@@ -101,6 +118,7 @@ class ProductTable extends React.Component<IProps, IState> {
               <th>Index</th>
               <th>Product</th>
               <th>Description</th>
+              <th>Price</th>
               <th>Ctegory id</th>
               <th className="text-center" colSpan={1}>
                 Action
