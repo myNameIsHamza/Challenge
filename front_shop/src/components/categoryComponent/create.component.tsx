@@ -31,7 +31,7 @@ interface IState {
             category: {
                 name: '',
                 description: '',
-                categoryId: 0,
+                categoryId: null,
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
@@ -70,7 +70,7 @@ interface IState {
                         category: {
                             name: '',
                             description: '',
-                            categoryId: 0,
+                            categoryId: null,
                             uid: undefined,
                         }
                     });

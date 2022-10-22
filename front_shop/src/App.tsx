@@ -8,7 +8,6 @@ import ProductTable from './components/productComponent/productTable.component';
 import CreateCategory from './components/categoryComponent/create.component';
 import CreateProduct from './components/productComponent/create.component';
 import Tree from './components/treeComponent/tree.component'
-import { CurrencyApiFromEuro } from './api/indexe'
 import { RapidApi } from './api/rapidApi'
 
 
@@ -17,10 +16,6 @@ function App() {
     const [currencyName, setCurrencyName]: any = useState('EUR');
     useEffect(() => {
         RapidApi()
-        // keycloak.init({
-        //   checkLoginIframeInterval : 6000
-        // })
-
     }, [])
     const handleSelect = async (event: any) => {
         const data = JSON.parse(localStorage.getItem('currency') || '{}')

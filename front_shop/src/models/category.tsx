@@ -2,7 +2,7 @@ export default class Category {
     uid?: number;
     name: string;
     description: string;
-    categoryId: Number;
+    categoryId: Number | null;
 
     constructor(uid: number,name: string, description: string, categoryId: Number) {
         this.uid = uid;
