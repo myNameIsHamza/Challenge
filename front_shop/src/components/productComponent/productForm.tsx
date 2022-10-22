@@ -14,7 +14,7 @@ interface Props {
 export const ProductForm: React.FunctionComponent<Props> = (props) => {
     return (
         <form>
-            <h1>Manage member</h1>
+            <h1>Add product</h1>
 
             <Input
                 name="name"
@@ -32,14 +32,15 @@ export const ProductForm: React.FunctionComponent<Props> = (props) => {
 
             <Input
                 name="price"
-                label="price"
+                label="price (EUR)"
+                placeholder='EUR'
                 value={props.product.price+''}
                 onChange={props.onChange}
             />
 
 
             <FormControl fullWidth>
-                <label>Product</label>
+                <label>Category</label>
                 <select
                     defaultValue={'0'}
                     onChange={props.onSelect}

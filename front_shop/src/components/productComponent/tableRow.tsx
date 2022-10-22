@@ -32,7 +32,7 @@ const TableRow: React.FunctionComponent<IProps> = (props) => {
         <td><>{props.index}</></td>
         <td>{props.product.name}</td>
         <td>{props.product.description}</td>
-        <td>{props.product.price +" "+ props.currencyName}</td>
+        <td>{(Number(props.product.price)*props.factor).toFixed(2) +" "+ props.currencyName}</td>
         <td><>{props.product.categoryId}</></td>
         <td>
           <Link to={"/edit/" + props.product.uid} className="btn btn-primary">

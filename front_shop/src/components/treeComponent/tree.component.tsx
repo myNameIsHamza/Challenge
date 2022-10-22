@@ -9,8 +9,8 @@ import CategoryTable from '../categoryComponent/categoryTable.component';
 import Category from '../../models/category';
 
 interface props {
-  factor: 1,
-  currencyName: 'EUR',
+  factor: number,
+  currencyName: string,
 }
 
 

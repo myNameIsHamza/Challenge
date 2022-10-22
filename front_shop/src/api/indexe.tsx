@@ -17,11 +17,9 @@ export const CurrencyApiFromEuro = async (currencyName: any): Promise<number> =>
         redirect: 'follow',
         headers: myHeaders
     };
-    console.log(currencyName)
     const api = "https://api.apilayer.com/currency_data/live?source=EUR&currencies=" + currencyName
 
     const response = await fetch(api, requestOptions)
-    console.log(response)
     const { data } = await response.json()
     const currency: Currency = data;
     const res = Number(JSON.stringify(currency.quotes).split(":")[1].split("}")[0])

@@ -12,7 +12,6 @@ const options = {
 };
 
 axios.request(options).then(function (response:any) {
-	console.log(response.data);
     localStorage.setItem('currency', JSON.stringify(response.data));
 }).catch(function (error:any) {
 	console.error(error);

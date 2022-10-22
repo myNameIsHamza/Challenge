@@ -14,7 +14,7 @@ interface Props {
 export const CategoryForm: React.FunctionComponent<Props> = (props) => {
     return (
         <form>
-            <h1>Manage member</h1>
+            <h1>Add category</h1>
 
             <Input
                 name="name"

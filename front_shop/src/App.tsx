@@ -16,14 +16,14 @@ function App() {
     const [factor, setFactor]: any = useState(1);
     const [currencyName, setCurrencyName]: any = useState('EUR');
     useEffect(() => {
-    RapidApi()
-    // keycloak.init({
-    //   checkLoginIframeInterval : 6000
-    // })
-    
-  }, [])
+        RapidApi()
+        // keycloak.init({
+        //   checkLoginIframeInterval : 6000
+        // })
+
+    }, [])
     const handleSelect = async (event: any) => {
-        const data = JSON.parse(localStorage.getItem('currency')|| '{}')
+        const data = JSON.parse(localStorage.getItem('currency') || '{}')
         switch (event.target.value) {
             case "MAD":
                 setFactor(data.rates.MAD)
@@ -40,7 +40,7 @@ function App() {
             case "GBP":
                 setFactor(data.rates.GBP)
                 break;
-        
+
             default:
                 break;
         }
@@ -52,7 +52,7 @@ function App() {
         <Router>
             <div className="container">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className="" id="navbarSupportedContent">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
                                 <Link to={'/'} className="nav-link">Categories</Link>
@@ -63,7 +63,7 @@ function App() {
                             <li className="nav-item">
                                 <Link to={'/tree'} className="nav-link">Tree</Link>
                             </li>
-                            <li className="nav-item float-end">
+                            <li className="nav-item currency">
                                 <select
                                     defaultValue={'0'}
                                     onChange={handleSelect}
@@ -90,18 +90,15 @@ function App() {
                   <Route path='/products' element={<ProductsTable />} */}
                     <Route path='/createProduct' component={CreateProduct} />
                     <Route path='/createCategory' component={CreateCategory} />
-                    <Route path='/products' component={ProductTable} />
                     <Route
                         path="/products"
-                        render={({ match }) => {
-                            // Do whatever you want with the match...
+                        render={() => {
                             return <ProductTable factor={factor} currencyName={currencyName} />;
-                        }}/>
+                        }} />
 
                     <Route
                         path="/tree"
-                        render={({ match }) => {
-                            // Do whatever you want with the match...
+                        render={() => {
                             return <Tree factor={factor} currencyName={currencyName} />;
                         }}
                     />

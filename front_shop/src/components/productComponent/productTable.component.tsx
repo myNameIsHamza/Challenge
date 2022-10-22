@@ -12,8 +12,6 @@ interface IState {
   listproducts: Array<Product>;
   isReady: Boolean;
   hasError: Boolean;
-  factor: number,
-  currencyName: string,
 }
 
 class ProductTable extends React.Component<props, IState> {
@@ -21,8 +19,6 @@ class ProductTable extends React.Component<props, IState> {
     listproducts: new Array<Product>(),
     isReady: false,
     hasError: false,
-    factor: 1,
-    currencyName: "",
   };
   constructor(props: any) {
     super(props);
@@ -30,8 +26,6 @@ class ProductTable extends React.Component<props, IState> {
       isReady: false,
       listproducts: Array<Product>(),
       hasError: false,
-      factor: 1,
-      currencyName: "",
     };
   }
   public async fetchProducts(): Promise<any> {
