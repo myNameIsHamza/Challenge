@@ -1,7 +1,9 @@
-import * as React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Product from '../../models/product';
 import FormControl from '@mui/material/FormControl';
 import { Input, Button } from '../../common';
+import CategoryTable from '../categoryComponent/categoryTable.component';
+import Category from '../../models/category';
 
 interface Props {
     product: Product;
@@ -12,6 +14,24 @@ interface Props {
 
 
 export const ProductForm: React.FunctionComponent<Props> = (props) => {
+
+    const calculation = useMemo(async () => {
+        //instance of categoryTableClass
+        const categoryTable: CategoryTable = new CategoryTable({
+            isReady: false,
+            listCategories: Array<Category>(),
+            hasError: false,
+        });
+        return await categoryTable.fetchCategories()
+    }, []);
+    const [categoriesList, setCategoriesList] = useState([])
+
+    useEffect(() => {
+        calculation.then((value) => {
+            setCategoriesList(value.data)
+        });
+    }, [calculation])
+
     return (
         <form>
             <h1>Add product</h1>
@@ -34,7 +54,7 @@ export const ProductForm: React.FunctionComponent<Props> = (props) => {
                 name="price"
                 label="price (EUR)"
                 placeholder='EUR'
-                value={props.product.price+''}
+                value={props.product.price + ''}
                 onChange={props.onChange}
             />
 
@@ -46,14 +66,9 @@ export const ProductForm: React.FunctionComponent<Props> = (props) => {
                     onChange={props.onSelect}
                     name={'categoryId'}
                 >
-                    <option value="0">None</option>
-
-                    <option value="1">Clothes</option>
-                    <option value="2">Shoes</option>
-                    <option value="3">Men clothes</option>
-                    <option value="4">Women clothes</option>
-                    <option value="5">Men shoes</option>
-                    <option value="6">Men shoes</option>
+                    {categoriesList.map((category, key) => {
+                        return <option key={key} value={key + 1} >{(category as Category).description}</option>
+                    })}
                 </select>
             </FormControl>
 

@@ -44,11 +44,12 @@ class Tree extends React.Component<props> {
     const categories = await this.categoryTable.fetchCategories();
 
     this.allData = categories.data;
+    const allDataSize:number = this.allData.length
 
     products.data.map((p: any, k: any) => {
       return this.allData.push(
         {
-          uid: k + 7,
+          uid: k + allDataSize + 1,
           name: p.name,
           description: p.description,
           price: Number(p.price * this.props.factor).toFixed(2) + " " + this.props.currencyName,
@@ -92,8 +93,8 @@ class Tree extends React.Component<props> {
       );
     }
     return (
-      <span style={{ position: "relative", height: "100%" }} > <TreeItem style={{ display: "inline-block", position: "absolute" }} key={fromTree.uid} nodeId={String(fromTree.uid)} label={fromTree.name} />
-        &nbsp;&nbsp;&nbsp;&nbsp; <span style={{ position: "relative", left: "200px" }}>{fromTree.price}</span>
+      <span style={{ height: "100%",display: "flex",alignItems:"center" }} > <TreeItem style={{ display: "flex",alignItems:"center" }} key={fromTree.uid} nodeId={String(fromTree.uid)} label={fromTree.name} />
+        <span style={{  left: "20px" }}>{fromTree.price}</span>
       </span>
 
     );
@@ -105,7 +106,7 @@ class Tree extends React.Component<props> {
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
       multiSelect
-      sx={{ height: 416, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+      sx={{ flexGrow: 1,display:'flex'}}
     >
       {
         this.makeTree(this.state.allData, null).map((tree: any) => {

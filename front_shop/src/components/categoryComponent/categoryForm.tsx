@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Category from '../../models/category';
 import FormControl from '@mui/material/FormControl';
 import { Input, Button } from '../../common';
+import CategoryTable from './categoryTable.component';
 
 interface Props {
     category: Category;
@@ -12,6 +13,26 @@ interface Props {
 
 
 export const CategoryForm: React.FunctionComponent<Props> = (props) => {
+
+
+    const calculation = useMemo(async () => {
+        //instance of categoryTableClass
+        const categoryTable: CategoryTable = new CategoryTable({
+            isReady: false,
+            listCategories: Array<Category>(),
+            hasError: false,
+        });
+        return await categoryTable.fetchCategories()
+    }, []);
+
+    const [categoriesList, setCategoriesList] = useState([])
+
+    useEffect(() => {
+        calculation.then((value) => {
+            setCategoriesList(value.data)
+        });
+    }, [calculation])
+
     return (
         <form>
             <h1>Add category</h1>
@@ -39,13 +60,9 @@ export const CategoryForm: React.FunctionComponent<Props> = (props) => {
                     name={'categoryId'}
                 >
                     <option value="0">None</option>
-
-                    <option value="1">Clothes</option>
-                    <option value="2">Shoes</option>
-                    <option value="3">Men clothes</option>
-                    <option value="4">Women clothes</option>
-                    <option value="5">Men shoes</option>
-                    <option value="6">Men shoes</option>
+                    {categoriesList.map((category, key) => {
+                        return <option key={key} value={key + 1} >{(category as Category).description}</option>
+                    })}
                 </select>
             </FormControl>
 
