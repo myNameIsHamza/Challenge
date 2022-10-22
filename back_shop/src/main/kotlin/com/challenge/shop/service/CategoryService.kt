@@ -12,8 +12,10 @@ class CategoryService(@Autowired private val categoryDao: CategoryDao) {
     fun getAllCategories(): List<Category> =
         categoryDao.findAll()
 
-    fun getCategoryById(@PathVariable id: Long): Category =
-        categoryDao.findById(id).get()
+    fun getCategoryById(@PathVariable id: Long?): Category? {
+        return id?.let { categoryDao.findById(it).get() }
+    }
+
 
 
     fun saveCategories(@RequestBody category: Category): Category {
