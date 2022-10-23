@@ -62,7 +62,7 @@ export const CategoryForm: React.FunctionComponent<Props> = (props) => {
                 >
                     <option value="0">None</option>
                     {categoriesList.map((category, key) => {
-                        return <option key={key} value={key + 1} >{(category as Category).description}</option>
+                        return <option key={key} value={(category as Category).uid+''} >{(category as Category).description}</option>
                     })}
                 </select>
             </FormControl>

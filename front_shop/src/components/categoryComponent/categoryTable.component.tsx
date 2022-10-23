@@ -39,7 +39,7 @@ class CategoryTable extends React.Component<IProps, IState> {
       const data = rp.data;
       const listCategories = new Array<Category>();
       (data || []).forEach((p: any) => {
-        listCategories.push(new Category(p.uid, p.name, p.description, p.categoryId ?? "None"));
+        listCategories.push(new Category(p.uid, p.name, p.description, p.categoryId));
       });
 
       this.setState({ listCategories: listCategories });
@@ -111,7 +111,7 @@ class CategoryTable extends React.Component<IProps, IState> {
               <th>Index</th>
               <th>Category</th>
               <th>Description</th>
-              <th>Category id</th>
+              <th>Parent category description</th>
               <th className="text-center" colSpan={1}>
                 Action
               </th>

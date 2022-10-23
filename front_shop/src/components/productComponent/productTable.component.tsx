@@ -41,7 +41,7 @@ class ProductTable extends React.Component<props, IState> {
       const data = rp.data;
       const listproducts = new Array<Product>();
       (data || []).forEach((p: any) => {
-        listproducts.push(new Product(p.uid, p.name, p.description, p.price, p.categoryId ?? "None"));
+        listproducts.push(new Product(p.uid, p.name, p.description, p.price, p.categoryId));
       });
 
       this.setState({ listproducts: listproducts });
@@ -113,7 +113,7 @@ class ProductTable extends React.Component<props, IState> {
               <th>Product</th>
               <th>Description</th>
               <th>Price</th>
-              <th>Ctegory id</th>
+              <th>Category description</th>
               <th className="text-center" colSpan={1}>
                 Action
               </th>

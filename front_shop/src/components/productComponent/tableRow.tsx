@@ -1,8 +1,9 @@
-import React from "react";
+import React,{ useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Product from "../../models/product";
 import BaseService from "../../service/base.service";
 import * as toastr from "toastr";
+import Category from "../../models/category";
 
 function Del(Id?: number) {
   BaseService.delete("/product/", Id).then((rp) => {
@@ -25,6 +26,28 @@ interface IProps {
 }
 
 const TableRow: React.FunctionComponent<IProps> = (props) => {
+const [desc, setDesc] = useState("");
+  useEffect(() => {
+    if (props.product.categoryId !== null) {
+      BaseService.get<Category>('/category/', props.product.categoryId).then(
+        (rp) => {
+          if (rp.status === 200) {
+
+            const category = rp.data;
+            setDesc(category.description);
+          } else {
+            toastr.error(rp.Messages);
+            console.log("Messages: " + rp.Messages);
+            console.log("Exception: " + rp.Exception);
+          }
+        }
+
+      );
+    } else {
+      setDesc("None");
+    }
+
+  }, [props.product.categoryId])
 
   return (
     <React.Fragment>
@@ -33,7 +56,7 @@ const TableRow: React.FunctionComponent<IProps> = (props) => {
         <td>{props.product.name}</td>
         <td>{props.product.description}</td>
         <td>{(Number(props.product.price)*props.factor).toFixed(2) +" "+ props.currencyName}</td>
-        <td><>{props.product.categoryId}</></td>
+        <td><>{desc}</></td>
         <td>
           <Link to={"/editProduct/" + props.product.uid} className="btn btn-primary">
             Edit
