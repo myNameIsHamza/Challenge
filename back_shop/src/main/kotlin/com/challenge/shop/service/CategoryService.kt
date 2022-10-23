@@ -22,12 +22,18 @@ class CategoryService(@Autowired private val categoryDao: CategoryDao) {
         if(category.name.isEmpty()){
             throw Exception("Empty name")
         }
+        if(category.description.isEmpty()){
+            throw Exception("Empty description")
+        }
         return categoryDao.save(category)
     }
 
     fun updateCategory(@PathVariable id: Long, @RequestBody category: Category): Category {
         if(category.name.isEmpty()){
             throw Exception("Empty name")
+        }
+        if(category.description.isEmpty()){
+            throw Exception("Empty description")
         }
         categoryDao.findById(id).takeIf { e -> e != null }?.let {
             return categoryDao.save(Category(id, category.name, category.description, category.category))
