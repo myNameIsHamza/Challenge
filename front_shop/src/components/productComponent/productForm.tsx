@@ -70,7 +70,7 @@ export const ProductForm: React.FunctionComponent<Props> = (props) => {
                 >
                     <option disabled value="0">Choose a category</option>
                     {categoriesList.map((category, key) => {
-                        return <option key={key} value={key + 1} >{(category as Category).description}</option>
+                        return <option key={key} value={(category as Category).uid+''} >{(category as Category).description}</option>
                     })}
                 </select>
             </FormControl>
