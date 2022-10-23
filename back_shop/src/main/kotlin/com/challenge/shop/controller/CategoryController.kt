@@ -71,7 +71,7 @@ class CategoryController(@Autowired private val categoryService: CategoryService
             val category : Category? = categoryService.getCategoryById(categoryDto.categoryId)
             val category2 : Category = categoryDto.toCategory(category)
             return ResponseEntity.status(HttpStatus.OK)
-                .body(categoryService.saveCategories(category2))
+                .body(categoryService.saveCategory(category2))
         } catch (e: Exception) {
             return ResponseEntity.badRequest().body(e.message);
         }

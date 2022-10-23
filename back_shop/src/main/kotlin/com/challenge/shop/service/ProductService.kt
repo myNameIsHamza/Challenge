@@ -17,10 +17,22 @@ class ProductService(@Autowired private val productDao: ProductDao) {
 
 
     fun saveProducts(@RequestBody product: Product): Product {
+        if(product.name.isEmpty()){
+            throw Exception("Empty name")
+        }
+        if(product.price == 0.0){
+            throw Exception("Price equal to zero")
+        }
         return productDao.save(product)
     }
 
     fun updateProduct(@PathVariable id: Long, @RequestBody product: Product): Product {
+        if(product.name.isEmpty()){
+            throw Exception("Empty name")
+        }
+        if(product.price.equals(0)){
+            throw Exception("Price equal to zero")
+        }
         productDao.findById(id).takeIf { e -> e != null }?.let {
             return productDao.save(Product(id, product.name, product.description, product.price, product.category))
         } ?: throw Exception("Product does not exist")

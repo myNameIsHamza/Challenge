@@ -18,11 +18,17 @@ class CategoryService(@Autowired private val categoryDao: CategoryDao) {
 
 
 
-    fun saveCategories(@RequestBody category: Category): Category {
+    fun saveCategory(@RequestBody category: Category): Category {
+        if(category.name.isEmpty()){
+            throw Exception("Empty name")
+        }
         return categoryDao.save(category)
     }
 
     fun updateCategory(@PathVariable id: Long, @RequestBody category: Category): Category {
+        if(category.name.isEmpty()){
+            throw Exception("Empty name")
+        }
         categoryDao.findById(id).takeIf { e -> e != null }?.let {
             return categoryDao.save(Category(id, category.name, category.description, category.category))
         } ?: throw Exception("Category does not exist")
