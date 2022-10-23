@@ -9,6 +9,8 @@ import CreateCategory from './components/categoryComponent/create.component';
 import CreateProduct from './components/productComponent/create.component';
 import Tree from './components/treeComponent/tree.component'
 import { RapidApi } from './api/rapidApi'
+import EditCategory from './components/categoryComponent/edit.component';
+import EditProduct from './components/productComponent/edit.component';
 
 
 function App() {
@@ -78,13 +80,11 @@ function App() {
                 </nav> <br />
 
                 <Switch>
-                    {/* 
-                  <Route path='/editCategory/:id' element={<EditCategory /> />
-                  <Route path='/editProduct/:id' element={<EditProduct />}
-                  <Route path='/tree' element={<Tree />}
-                  <Route path='/products' element={<ProductsTable />} */}
+
                     <Route path='/createProduct' component={CreateProduct} />
                     <Route path='/createCategory' component={CreateCategory} />
+                    <Route path='/editCategory/:id' component={EditCategory} />
+                    <Route path='/editProduct/:id' component={EditProduct} />
                     <Route
                         path="/products"
                         render={() => {

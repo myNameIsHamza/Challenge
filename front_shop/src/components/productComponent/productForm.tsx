@@ -10,12 +10,13 @@ interface Props {
     onChange: (fieldName: string, value: string) => void;
     onSelect: (event: any) => void;
     onSave: () => void;
+    action: string;
 }
 
 
 export const ProductForm: React.FunctionComponent<Props> = (props) => {
 
-    const calculation = useMemo(async () => {
+    const fetchCategoriesData = useMemo(async () => {
         //instance of categoryTableClass
         const categoryTable: CategoryTable = new CategoryTable({
             isReady: false,
@@ -27,14 +28,14 @@ export const ProductForm: React.FunctionComponent<Props> = (props) => {
     const [categoriesList, setCategoriesList] = useState([])
 
     useEffect(() => {
-        calculation.then((value) => {
+        fetchCategoriesData.then((value) => {
             setCategoriesList(value.data)
         });
-    }, [calculation])
+    }, [fetchCategoriesData])
 
     return (
         <form>
-            <h1>Add product</h1>
+            <h1>{props.action === "modification" ? "Modify product" : "Add product"}</h1>
 
             <Input
                 name="name"
@@ -62,10 +63,12 @@ export const ProductForm: React.FunctionComponent<Props> = (props) => {
             <FormControl fullWidth>
                 <label>Category</label>
                 <select
-                    defaultValue={'0'}
+                    value={props.product.categoryId + ''}
                     onChange={props.onSelect}
                     name={'categoryId'}
+                    required
                 >
+                    <option disabled value="0">Choose a category</option>
                     {categoriesList.map((category, key) => {
                         return <option key={key} value={key + 1} >{(category as Category).description}</option>
                     })}

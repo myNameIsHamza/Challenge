@@ -3,43 +3,45 @@ import * as toastr from 'toastr';
 import Product from "../../models/product";
 import BaseService from '../../service/base.service';
 import { ProductPage } from './page.form';
- import { History } from 'history';
+import { History } from 'history';
 
 
-interface IProps { 
+interface IProps {
     history: History;
     //Map properties match
-    match:{ 
+    match: {
         isExact: boolean
         params: {
-            id:string
+            id: string
         },
         path: string,
         url: string,
     }
 }
 interface IState {
-    product: Product
+    product: Product,
+    action: string
 }
 
 
- class CreateProduct extends  React.Component<IProps, IState> {
-    constructor(props:IProps) {
+class CreateProduct extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
-         
+
         this.state = {
             product: {
                 name: '',
                 description: '',
-                price:0,
+                price: 0,
                 categoryId: 0,
-            }
+            },
+            action: "creation"
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
         this.onSelect = this.onSelect.bind(this);
     }
 
-    private onSelect(event : any){
+    private onSelect(event: any) {
         const nextState = {
             ...this.state,
             product: {
@@ -51,7 +53,7 @@ interface IState {
         this.setState(nextState);
     }
 
-    private onFieldValueChange(fieldName: string, value: string) { 
+    private onFieldValueChange(fieldName: string, value: string) {
         const nextState = {
             ...this.state,
             product: {
@@ -62,29 +64,29 @@ interface IState {
 
         this.setState(nextState);
     }
-    private onSave = () => { 
+    private onSave = () => {
         BaseService.create<Product>("/product", this.state.product).then(
             (rp) => {
-                if (rp) {
-                    toastr.success('Member saved.'); 
+                if (rp.status === 200) {
+                    toastr.success('Member saved.');
                     this.setState({
                         product: {
                             name: '',
                             description: '',
-                            price:0,
+                            price: 0,
                             categoryId: 0,
                             uid: undefined,
                         }
                     });
-                     this.props.history.goBack();
+                    this.props.history.goBack();
                 } else {
-                    toastr.error("Error");
+                    toastr.error(rp.message);
                 }
             }
         );
 
-    } 
-     
+    }
+
     render() {
         return (
             <ProductPage
@@ -92,9 +94,10 @@ interface IState {
                 onChange={this.onFieldValueChange}
                 onSave={this.onSave}
                 onSelect={this.onSelect}
+                action={this.state.action}
             />
         );
-    }     
-     
+    }
+
 }
 export default CreateProduct;

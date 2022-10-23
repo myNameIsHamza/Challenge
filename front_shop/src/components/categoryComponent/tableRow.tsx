@@ -30,7 +30,7 @@ const TableRow: React.FunctionComponent<IProps> = (props) => {
         <td>{props.category.description}</td>
         <td><>{props.category.categoryId}</></td>
         <td>
-          <Link to={"/edit/" + props.category.uid} className="btn btn-primary">
+          <Link to={"/editCategory/" + props.category.uid} className="btn btn-primary">
             Edit
           </Link>
         </td>

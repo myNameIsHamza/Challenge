@@ -7,6 +7,7 @@ interface IProps {
     onChange: (fieldName: string, value: string) => void;
     onSelect: (event: any) => void;
     onSave: () => void;
+    action:string;
 }
 
 export const CategoryPage: React.FunctionComponent<IProps> = (props: IProps) => {
@@ -16,6 +17,7 @@ export const CategoryPage: React.FunctionComponent<IProps> = (props: IProps) => 
             onChange={props.onChange}
             onSave={props.onSave}
             onSelect={props.onSelect}
+            action={props.action}
         />
     );
 }

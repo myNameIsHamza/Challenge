@@ -20,21 +20,22 @@ interface IProps {
 }
 interface IState {
     category: Category,
-    action: string
+    action:string
 }
 
 
-class CreateCategory extends React.Component<IProps, IState> {
+class EditCategory extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
         this.state = {
             category: {
+                uid: 0,
                 name: '',
                 description: '',
                 categoryId: null,
             },
-            action: "creation"
+            action:"modification"
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
         this.onSelect = this.onSelect.bind(this);
@@ -63,8 +64,27 @@ class CreateCategory extends React.Component<IProps, IState> {
 
         this.setState(nextState);
     }
+
+    public componentDidMount() {
+        BaseService.get<Category>('/category/', this.props.match.params.id).then(
+            (rp) => {
+                if (rp.status === 200) {
+
+                    const category = rp.data;
+                    this.setState({ category: new Category(category.uid, category.name, category.description, category.categoryId) });
+                } else {
+                    toastr.error(rp.Messages);
+                    console.log("Messages: " + rp.Messages);
+                    console.log("Exception: " + rp.Exception);
+                }
+            }
+
+        );
+    }
+
+
     private onSave = () => {
-        BaseService.create<Category>("/category", this.state.category).then(
+        BaseService.update<Category>("/category/", this.props.match.params.id, this.state.category).then(
             (rp) => {
                 if (rp.status === 200) {
                     toastr.success('Member saved.');
@@ -98,4 +118,4 @@ class CreateCategory extends React.Component<IProps, IState> {
     }
 
 }
-export default CreateCategory;
+export default EditCategory;

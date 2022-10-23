@@ -26,28 +26,28 @@ class CategoryTable extends React.Component<IProps, IState> {
     };
   }
 
-public async fetchCategories(): Promise<any> {
+  public async fetchCategories(): Promise<any> {
     let res = BaseService.getAll<Category>("/categories").then((rp) => {
       return rp;
     });
     return res;
   }
 
-   async getCategoryData() {
-      const rp = await this.fetchCategories();
-      if (rp.status === 200) {
-        const data = rp.data;
-        const listCategories = new Array<Category>();
-        (data || []).forEach((p: any) => {
-          listCategories.push(new Category(p.uid, p.name, p.description, p.categoryId ?? "None"));
-        });
+  async getCategoryData() {
+    const rp = await this.fetchCategories();
+    if (rp.status === 200) {
+      const data = rp.data;
+      const listCategories = new Array<Category>();
+      (data || []).forEach((p: any) => {
+        listCategories.push(new Category(p.uid, p.name, p.description, p.categoryId ?? "None"));
+      });
 
-        this.setState({ listCategories: listCategories });
-        this.setState({ isReady: true });
-      } else {
-        this.setState({ isReady: true });
-        this.setState({ hasError: true });
-      }
+      this.setState({ listCategories: listCategories });
+      this.setState({ isReady: true });
+    } else {
+      this.setState({ isReady: true });
+      this.setState({ hasError: true });
+    }
   }
 
   public componentDidMount() {

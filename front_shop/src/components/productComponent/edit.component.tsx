@@ -1,8 +1,8 @@
 import React from 'react';
 import * as toastr from 'toastr';
-import Category from "../../models/category";
+import Product from "../../models/product";
 import BaseService from '../../service/base.service';
-import { CategoryPage } from './page.form';
+import { ProductPage } from './page.form';
 import { History } from 'history';
 
 
@@ -19,22 +19,24 @@ interface IProps {
     }
 }
 interface IState {
-    category: Category,
+    product: Product,
     action: string
 }
 
 
-class CreateCategory extends React.Component<IProps, IState> {
+class EditProduct extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            category: {
+            product: {
+                uid: 0,
                 name: '',
                 description: '',
-                categoryId: null,
+                price: 0,
+                categoryId: 0,
             },
-            action: "creation"
+            action: "modification"
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
         this.onSelect = this.onSelect.bind(this);
@@ -43,8 +45,8 @@ class CreateCategory extends React.Component<IProps, IState> {
     private onSelect(event: any) {
         const nextState = {
             ...this.state,
-            category: {
-                ...this.state.category,
+            product: {
+                ...this.state.product,
                 [event.target.name]: event.target.value,
             }
         };
@@ -55,24 +57,43 @@ class CreateCategory extends React.Component<IProps, IState> {
     private onFieldValueChange(fieldName: string, value: string) {
         const nextState = {
             ...this.state,
-            category: {
-                ...this.state.category,
+            product: {
+                ...this.state.product,
                 [fieldName]: value,
             }
         };
 
         this.setState(nextState);
     }
+
+    public componentDidMount() {
+        BaseService.get<Product>('/product/', this.props.match.params.id).then(
+            (rp) => {
+                if (rp.status === 200) {
+
+                    const product = rp.data;
+                    this.setState({ product: new Product(product.uid, product.name, product.description, product.price, product.categoryId) });
+                } else {
+                    toastr.error(rp.Messages);
+                    console.log("Messages: " + rp.Messages);
+                    console.log("Exception: " + rp.Exception);
+                }
+            }
+
+        );
+    }
+
     private onSave = () => {
-        BaseService.create<Category>("/category", this.state.category).then(
+        BaseService.update<Product>("/product/", this.props.match.params.id, this.state.product).then(
             (rp) => {
                 if (rp.status === 200) {
                     toastr.success('Member saved.');
                     this.setState({
-                        category: {
+                        product: {
                             name: '',
                             description: '',
-                            categoryId: null,
+                            price: 0,
+                            categoryId: 0,
                             uid: undefined,
                         }
                     });
@@ -87,8 +108,8 @@ class CreateCategory extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <CategoryPage
-                category={this.state.category}
+            <ProductPage
+                product={this.state.product}
                 onChange={this.onFieldValueChange}
                 onSave={this.onSave}
                 onSelect={this.onSelect}
@@ -98,4 +119,4 @@ class CreateCategory extends React.Component<IProps, IState> {
     }
 
 }
-export default CreateCategory;
+export default EditProduct;
